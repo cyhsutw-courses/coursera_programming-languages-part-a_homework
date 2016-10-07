@@ -95,22 +95,23 @@ fun oldest(xs: (int * int * int) list) =
 
 
 (* Challenge *)
+fun unique_copy(xs: int list, ys: int list) =
+  if null(ys)
+  then xs
+  else
+    let
+      fun contains(target: int, xs: int list) =
+        if null(xs)
+        then false
+        else hd(xs) = target orelse contains(target, tl(xs))
+    in
+      if contains(hd(ys), xs)
+      then unique_copy(xs, tl(ys))
+      else unique_copy(xs @ [hd(ys)], tl(ys))
+    end
+
 fun number_in_months_challenge(xs: (int * int * int) list, ys: int list) =
-  let
-    fun unique_copy(xs: int list, ys: int list) =
-      if null(ys)
-      then xs
-      else
-        let
-          fun contains(target: int, xs: int list) =
-            if null(xs)
-            then false
-            else hd(xs) = target orelse contains(target, tl(xs))
-        in
-          if contains(hd(ys), xs)
-          then unique_copy(xs, tl(ys))
-          else unique_copy(xs @ [hd(ys)], tl(ys))
-        end
-  in
-    number_in_months(xs, unique_copy([], ys))
-  end
+  number_in_months(xs, unique_copy([], ys))
+
+fun dates_in_months_challenge(xs: (int * int * int) list, ys: int list) =
+  dates_in_months(xs, unique_copy([], ys))
