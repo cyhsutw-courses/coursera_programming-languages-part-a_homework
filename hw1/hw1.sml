@@ -115,3 +115,20 @@ fun number_in_months_challenge(xs: (int * int * int) list, ys: int list) =
 
 fun dates_in_months_challenge(xs: (int * int * int) list, ys: int list) =
   dates_in_months(xs, unique_copy([], ys))
+
+fun reasonable_date(x: int * int * int) =
+  let
+    val year = #1(x)
+    val month = #2(x)
+    val day = #3(x)
+    val isLeapYear = (year mod 400) = 0 orelse ((year mod 4) = 0 andalso (year mod 100) <> 0)
+    val maxDays = if isLeapYear
+                  then [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                  else [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    fun get_nth(xs: int list, y: int) =
+      if y = 1
+      then hd(xs)
+      else get_nth(tl(xs), y - 1)
+  in
+    year > 0 andalso (month >= 1 andalso month <= 12) andalso (day >= 1 andalso day <= get_nth(maxDays, month))
+  end
